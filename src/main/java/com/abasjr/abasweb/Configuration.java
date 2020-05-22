@@ -1,6 +1,5 @@
 package com.abasjr.abasweb;
 
-
 import com.abasjr.abasweb.model.DataBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 
 @SpringBootApplication
 public class Configuration {
@@ -19,6 +19,7 @@ public class Configuration {
     
     // @Bean // untuk menandai bahwa metode ini adalah sebuah bean
     // @Primary
+
     @Bean(name = "Abas")
     public DataBean createDataBean(){
         DataBean bean = new DataBean("Abas Junior");
@@ -29,6 +30,8 @@ public class Configuration {
     // @Bean
     @Bean(name = "Sans")
     @Primary
+    // 12 Scope
+    @Scope("prototype")   // @Scope("singletone") //defaultnya singleton, bisa di ganti prototype
     public DataBean createDataBean2(){
         DataBean bean = new DataBean("Santos");
         return bean;

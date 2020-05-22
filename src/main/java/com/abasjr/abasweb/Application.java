@@ -34,6 +34,22 @@ public class Application {
 		// 10 Component
 		SayHello dataHello = context.getBean(SayHello.class); // walaupun tidak ada diconfiguration tapi tetep ada Bean nya karena pakai @Component 
 		System.out.println(dataHello.hello("Anggit"));
+
+		// 12 Scope
+		// Spring secara default akan membuat Bean itu SINGLETON (membuat 1 buah Bean walaupun lebih dari 1x)
+		// Singleton, dia akan membuat object yang sama, walaupun dibedakan
+		DataBean abas1= context.getBean(DataBean.class);
+		System.out.println(abas1); //Santos DataBean@25fdacb7
+		abas1.setValue("Coba dirubah");
+
+		DataBean abas2= context.getBean(DataBean.class);
+		System.out.println(abas2); //Santos DataBean@25fdacb7
+
+		DataBean abas3= context.getBean(DataBean.class);
+		System.out.println(abas3.getValue()); //Santos
+
+		DataBean abas4= context.getBean(DataBean.class);
+		System.out.println(abas4.getValue()); //Santos
 	}
 
 }
