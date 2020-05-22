@@ -2,7 +2,9 @@ package com.abasjr.abasweb;
 
 
 import com.abasjr.abasweb.model.DataBean;
+import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
+// import com.abasjr.abasweb.model.SayHello;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,4 +42,19 @@ public class Configuration {
         SampleBean bean = new SampleBean(dataBean);
         return bean;
     }
+
+    // 08 Dependency Injection 3
+    // Other Bean membutuhkan dependency dari SampleBean dan juga DataBean Santos
+    @Bean
+    public OtherBean createOtherBean(DataBean dataBean, SampleBean sampleBean){
+        OtherBean bean = new OtherBean(dataBean, sampleBean);
+        return bean;
+    }
+
+    // 10 Component
+    // dibuat manual, tanpa @Component
+    // @Bean
+    // public SayHello createSayHello(){
+    //     return new SayHello();
+    // }
 }
