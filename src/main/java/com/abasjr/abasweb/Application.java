@@ -4,6 +4,8 @@ import com.abasjr.abasweb.model.DataBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
 import com.abasjr.abasweb.model.SayHello;
+import com.abasjr.abasweb.model.SayMorning;
+import com.abasjr.abasweb.service.DatabaseConfig;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +15,18 @@ import org.springframework.context.ApplicationContext;
 public class Application {
 
 	public static void main(String[] args) {
+
+		// 16 Profile 
+		System.setProperty("spring.profiles.active", "development"); // ACTIVE_PROFILES_PROPERTY_NAME = "spring.profiles.active" ABSTRACTENVIRONTMENT.class
+		// kalau ada 2 profile separate comma aja (-Dspring.profile.active = "profile1", "profile2")
+
 		// 04 Container
 		ApplicationContext context = SpringApplication.run(Configuration.class, args); 
 		//Application.class sebuah class configuration sebagai konfigurasi spring
+
+		// 16 Profile
+		DatabaseConfig config = context.getBean(DatabaseConfig.class);
+		System.out.println(config.getValue());
 
 		// 05 Bean
 		DataBean data = context.getBean(DataBean.class);
@@ -50,6 +61,16 @@ public class Application {
 
 		DataBean abas4= context.getBean(DataBean.class);
 		System.out.println(abas4.getValue()); //Santos
+
+
+		// 14 Aware
+		OtherBean dataOther2 = context.getBean(OtherBean.class);
+		dataOther2.doSomething(); //CONTEXT ADA
+
+
+		// 17 Internationalization
+		SayMorning dataMorning = context.getBean(SayMorning.class);
+		System.out.println(dataMorning.morning("Neymar"));
 	}
 
 }

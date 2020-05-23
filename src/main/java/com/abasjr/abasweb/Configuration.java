@@ -4,12 +4,15 @@ import com.abasjr.abasweb.model.DataBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
 // import com.abasjr.abasweb.model.SayHello;
+import com.abasjr.abasweb.service.DatabaseConfig;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
 @SpringBootApplication
 public class Configuration {
@@ -29,7 +32,7 @@ public class Configuration {
     // 07 Depedency Injection 2
     // @Bean
     @Bean(name = "Sans")
-    @Primary
+    @Primary // Untuk di course, berbeda, sekarang harus di define Primarynya, kalau engga tetep dideteksi error
     // 12 Scope
     @Scope("prototype")   // @Scope("singletone") //defaultnya singleton, bisa di ganti prototype
     public DataBean createDataBean2(){
@@ -60,4 +63,27 @@ public class Configuration {
     // public SayHello createSayHello(){
     //     return new SayHello();
     // }
+
+
+    // 16 Profile
+    // kalau gak di eksekusi keduanya, yg di ekseksi "default" dengan nama "default", makanya profilenya di set
+    @Bean(name = "development")
+    @Primary 
+    public DatabaseConfig createDevDatabaseConfig(){
+        return new DatabaseConfig("Database Development");
+    }
+
+    @Bean(name = "production")
+    public DatabaseConfig createProdDatabaseConfig(){
+        return new DatabaseConfig("Database Production");
+    }
+
+    // 17 Internationalization
+    // multi bahasa, seperti i18n di ruby
+    @Bean(name = "messageSource")
+    public MessageSource createMessageSource(){
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages.morning"); // masukin Package nya dulu, baru filenya, terus itu udah otomatis include semua versi Locale language
+        return messageSource;
+    }
 }
