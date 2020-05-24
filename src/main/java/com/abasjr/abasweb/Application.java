@@ -1,6 +1,10 @@
 package com.abasjr.abasweb;
 
+import java.io.IOException;
+
+import com.abasjr.abasweb.model.Author;
 import com.abasjr.abasweb.model.DataBean;
+import com.abasjr.abasweb.model.FileBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
 import com.abasjr.abasweb.model.SayHello;
@@ -16,13 +20,14 @@ public class Application {
 
 	public static void main(String[] args) {
 
-		// 16 Profile 
-		System.setProperty("spring.profiles.active", "development"); // ACTIVE_PROFILES_PROPERTY_NAME = "spring.profiles.active" ABSTRACTENVIRONTMENT.class
+		// 16 Profile
+		System.setProperty("spring.profiles.active", "development"); // ACTIVE_PROFILES_PROPERTY_NAME = "spring.profiles.active"
+		// ABSTRACTENVIRONTMENT.class 
 		// kalau ada 2 profile separate comma aja (-Dspring.profile.active = "profile1", "profile2")
 
 		// 04 Container
-		ApplicationContext context = SpringApplication.run(Configuration.class, args); 
-		//Application.class sebuah class configuration sebagai konfigurasi spring
+		ApplicationContext context = SpringApplication.run(Configuration.class, args);
+		// Application.class sebuah class configuration sebagai konfigurasi spring
 
 		// 16 Profile
 		DatabaseConfig config = context.getBean(DatabaseConfig.class);
@@ -30,9 +35,9 @@ public class Application {
 
 		// 05 Bean
 		DataBean data = context.getBean(DataBean.class);
-		System.out.println(data.getValue()); //Santos
+		System.out.println(data.getValue()); // Santos
 
-		// 06 Depedency Injection 
+		// 06 Depedency Injection
 		SampleBean dataSample = context.getBean(SampleBean.class);
 		System.out.println(dataSample.getDataBean().getValue()); // Abas Junior
 
@@ -43,34 +48,45 @@ public class Application {
 		System.out.println(dataOther.getSimpleBean().getDataBean().getValue());
 
 		// 10 Component
-		SayHello dataHello = context.getBean(SayHello.class); // walaupun tidak ada diconfiguration tapi tetep ada Bean nya karena pakai @Component 
+		SayHello dataHello = context.getBean(SayHello.class); // walaupun tidak ada diconfiguration tapi tetep ada Beannya karena pakai @Component
 		System.out.println(dataHello.hello("Anggit"));
 
 		// 12 Scope
 		// Spring secara default akan membuat Bean itu SINGLETON (membuat 1 buah Bean walaupun lebih dari 1x)
 		// Singleton, dia akan membuat object yang sama, walaupun dibedakan
-		DataBean abas1= context.getBean(DataBean.class);
-		System.out.println(abas1); //Santos DataBean@25fdacb7
+		DataBean abas1 = context.getBean(DataBean.class);
+		System.out.println(abas1); // Santos DataBean@25fdacb7
 		abas1.setValue("Coba dirubah");
 
-		DataBean abas2= context.getBean(DataBean.class);
-		System.out.println(abas2); //Santos DataBean@25fdacb7
+		DataBean abas2 = context.getBean(DataBean.class);
+		System.out.println(abas2); // Santos DataBean@25fdacb7
 
-		DataBean abas3= context.getBean(DataBean.class);
-		System.out.println(abas3.getValue()); //Santos
+		DataBean abas3 = context.getBean(DataBean.class);
+		System.out.println(abas3.getValue()); // Santos
 
-		DataBean abas4= context.getBean(DataBean.class);
-		System.out.println(abas4.getValue()); //Santos
-
+		DataBean abas4 = context.getBean(DataBean.class);
+		System.out.println(abas4.getValue()); // Santos
 
 		// 14 Aware
 		OtherBean dataOther2 = context.getBean(OtherBean.class);
-		dataOther2.doSomething(); //CONTEXT ADA
-
+		dataOther2.doSomething(); // CONTEXT ADA
 
 		// 17 Internationalization
 		SayMorning dataMorning = context.getBean(SayMorning.class);
 		System.out.println(dataMorning.morning("Neymar"));
+
+		// 18 Resources Loader
+		FileBean dataFile = context.getBean(FileBean.class);
+		try {
+			dataFile.printInfo();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// 19 Property Source
+		Author dataAuthor = context.getBean(Author.class);
+		System.out.println(dataAuthor.getName());
+		System.out.println(dataAuthor.getEmail());
 	}
 
 }
