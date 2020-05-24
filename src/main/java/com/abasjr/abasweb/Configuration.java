@@ -1,22 +1,47 @@
 package com.abasjr.abasweb;
 
+import com.abasjr.abasweb.model.Author;
 import com.abasjr.abasweb.model.DataBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
 // import com.abasjr.abasweb.model.SayHello;
 import com.abasjr.abasweb.service.DatabaseConfig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 
 @SpringBootApplication
+// 19 Property Source
+@PropertySources({
+    @PropertySource("classpath:/configuration/author.properties") // kalau property nya lebih dari 1 pakainya yang @PropertySources
+})
+// @PropertySource("classpath:/configuration/author.properties") // kalau property nya cuma 1 pakainya yang @PropertySource
+
 public class Configuration {
     
+    @Autowired
+    // 19 Property Source
+    private Environment env; // file configurasi ini otomatis akan di load di sebuah Bean env
+
+    // 19 Propery Source, step 2, membuat Bean Author
+    // @Bean
+    // public Author createAuthor(){
+    //     String name = env.getProperty("author.name");
+    //     String email = env.getProperty("author.email");
+    //     Author author = new Author(name, email);
+    //     return author;
+    // }
+    // dikomentar karena akan ke step 3, tidak menggunakan @Bean tetapi menggunakan @Component
+
     // 05 Bean
     // Bean adalah sebuah object, ketika kita membuat bean, maka kita membuat sebuah object
     
