@@ -1,6 +1,7 @@
 package com.abasjr.abasweb;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.abasjr.abasweb.model.Author;
 import com.abasjr.abasweb.model.DataBean;
@@ -10,10 +11,14 @@ import com.abasjr.abasweb.model.SampleBean;
 import com.abasjr.abasweb.model.SayHello;
 import com.abasjr.abasweb.model.SayMorning;
 import com.abasjr.abasweb.service.DatabaseConfig;
+import com.abasjr.abasweb.validation.AuthorValidator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 
 @SpringBootApplication
 public class Application {
@@ -87,6 +92,40 @@ public class Application {
 		Author dataAuthor = context.getBean(Author.class);
 		System.out.println(dataAuthor.getName());
 		System.out.println(dataAuthor.getEmail());
+
+		// 20 Spring Validator
+		Author dataAuthor2 = new Author("","");
+		// kalau nanti pakai Spring MVC akan otomatis dilakukan, tidak secara manual
+		// untuk sekarang, karena hanya menggunakan Spring Framework, maka kita butuh testing secara manual
+		// untuk test manual kita pakai bantuan DataBinder
+		DataBinder binder = new DataBinder(dataAuthor2);
+		binder.addValidators(new AuthorValidator());
+
+		binder.validate();
+
+		// unntuk mengambil hasil dari validasinya
+		BindingResult result =  binder.getBindingResult();
+
+		if (result.hasErrors()) {
+			// error
+			result.getAllErrors().stream().forEach((error) -> System.out.println(error.getCode())) ; // author.name.black dan author.email.blank (belum diconvert ke message)
+		} else {
+			// tidak ada error
+			System.out.println("Tidak ada error");
+		}
+
+		// untuk convert ke message
+		MessageSource messageSource = context.getBean(MessageSource.class);
+		if (result.hasErrors()) {
+			// error
+			result.getAllErrors().stream().forEach((error) -> {
+				String message = messageSource.getMessage(error.getCode(), null, Locale.getDefault()); // Authot name must be not blank!
+				System.out.println(message) ;
+			});
+		} else {
+			// tidak ada error
+			System.out.println("Tidak ada error");
+		}
 	}
 
 }
