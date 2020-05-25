@@ -1,6 +1,5 @@
 package com.abasjr.abasweb;
 
-import com.abasjr.abasweb.model.Author;
 import com.abasjr.abasweb.model.DataBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
@@ -17,7 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.core.env.Environment;
+// import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 // 19 Property Source
@@ -30,7 +29,7 @@ public class Configuration {
     
     @Autowired
     // 19 Property Source
-    private Environment env; // file configurasi ini otomatis akan di load di sebuah Bean env
+    // private Environment env; // file configurasi ini otomatis akan di load di sebuah Bean env
 
     // 19 Propery Source, step 2, membuat Bean Author
     // @Bean
