@@ -2,6 +2,11 @@ package com.abasjr.abasweb;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 
 import com.abasjr.abasweb.model.Author;
 import com.abasjr.abasweb.model.DataBean;
@@ -10,7 +15,9 @@ import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
 import com.abasjr.abasweb.model.SayHello;
 import com.abasjr.abasweb.model.SayMorning;
+import com.abasjr.abasweb.model.User;
 import com.abasjr.abasweb.service.DatabaseConfig;
+import com.abasjr.abasweb.service.UserService;
 import com.abasjr.abasweb.validation.AuthorValidator;
 
 import org.springframework.boot.SpringApplication;
@@ -126,6 +133,53 @@ public class Application {
 			// tidak ada error
 			System.out.println("Tidak ada error");
 		}
+
+
+		// 21 Bean Validator (Validasi Manual)
+		Validator validator = context.getBean(Validator.class);
+		User dataUser = new User();
+		dataUser.setId("123");
+		dataUser.setUsername("");
+		dataUser.setEmail("emailsalah");
+
+		Set<ConstraintViolation<User>> validatorResult = validator.validate(dataUser);
+
+		validatorResult.forEach((constraint) -> {
+			System.out.println(constraint.getMessage());
+		});		
+		
+		
+		// 21 Bean Validator (Validasi Automatic)
+		// Validator validator = context.getBean(Validator.class);
+		User dataUser2 = new User();
+		dataUser.setId("12");
+		dataUser.setUsername("");
+		dataUser.setEmail("emailsalah2");
+
+		// Set<ConstraintViolation<User>> validatorResult = validator.validate(dataUser);
+
+		// validatorResult.forEach((constraint) -> {
+		// 	System.out.println(constraint.getMessage());
+		// });
+
+		UserService dataService = context.getBean(UserService.class);
+		System.out.println("21 Bean Validator STEP 2 ============");
+		// dataService.save(dataUser2); // dipindahkan ke try catch
+
+		// Pakai Try Catch biar tetep running Springnya
+		try {
+			dataService.save(dataUser2); // harusnya disini Spring melakukan validasi
+		} catch (ConstraintViolationException e) {
+			e.getConstraintViolations().stream().forEach((error) -> System.out.println(error.getMessage()));
+		}
+
+		// try catch getById
+		try {
+			dataService.getById(""); // harusnya disini Spring melakukan validasi
+		} catch (ConstraintViolationException e) {
+			e.getConstraintViolations().stream().forEach((error) -> System.out.println(error.getMessage()));
+		}
+
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.abasjr.abasweb;
 
+import javax.validation.Validator;
+
 import com.abasjr.abasweb.model.DataBean;
 import com.abasjr.abasweb.model.OtherBean;
 import com.abasjr.abasweb.model.SampleBean;
@@ -17,6 +19,8 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ResourceBundleMessageSource;
 // import org.springframework.core.env.Environment;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 @SpringBootApplication
 // 19 Property Source
@@ -110,4 +114,17 @@ public class Configuration {
         messageSource.setBasename("messages.morning"); // masukin Package nya dulu, baru filenya, terus itu udah otomatis include semua versi Locale language
         return messageSource;
     }
+
+    // 21 Bean Validation
+    @Bean
+    public Validator createValidator(){ // menggunakan javax.validation
+        return new LocalValidatorFactoryBean();
+    }
+
+    // 21 Bean Validation (Step 2) , agar bisa mendeteksi @Validated di tiap file, kondisi disini sudah kita buat di UserService.java
+    @Bean 
+    public MethodValidationPostProcessor createMethodValidationPostProcessor(){
+        return new MethodValidationPostProcessor();
+    }
+
 }
